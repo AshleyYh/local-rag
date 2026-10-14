@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    container_name: local-rag-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: local_rag
+      POSTGRES_USER: raguser
+      POSTGRES_PASSWORD: rag_dev_2026
+      TZ: Asia/Shanghai
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U raguser -d local_rag"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:
